@@ -15,7 +15,7 @@
 | `choose_your_knowledge_base_agent.json` | — | — | — | — | ⬜ 待分析 |
 | `choose_your_knowledge_base_workflow.json` | — | — | — | — | ⬜ 待分析 |
 | `chunk_summary.json` | — | — | — | — | ⬜ 待分析 |
-| `customer_review_analysis.json` | — | — | — | — | ⬜ 待分析 |
+| `customer_review_analysis.json` | [概览](./customer_review_analysis/概览.md) | [产品经理视角](./customer_review_analysis/产品经理视角.md) | [开发者视角](./customer_review_analysis/开发者视角.md) | [业务视角](./customer_review_analysis/业务视角.md) | ✅ 已完成 |
 | `customer_service.json` | — | — | — | — | ⬜ 待分析 |
 | `customer_support.json` | — | — | — | — | ⬜ 待分析 |
 | `deep_search_r.json` | — | — | — | — | ⬜ 待分析 |
