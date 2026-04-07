@@ -162,6 +162,12 @@ func (r *Router) Setup(engine *gin.Engine) {
 				datasets.DELETE("", r.datasetsHandler.DeleteDatasets)
 			}
 
+			// RESTful dataset chunk routes
+			datasetChunks := v1.Group("/datasets/:dataset_id/documents/:document_id/chunks")
+			{
+				datasetChunks.PUT("/:chunk_id", r.chunkHandler.UpdateChunk)
+			}
+
 			// Author routes
 			authors := v1.Group("/authors")
 			{
@@ -189,13 +195,30 @@ func (r *Router) Setup(engine *gin.Engine) {
 			// 	message.GET("", r.memoryHandler.GetMessages)
 			// 	message.GET("/:memory_id/:message_id/content", r.memoryHandler.GetMessageContent)
 			// }
+
+			file := v1.Group("/files")
+			{
+				file.POST("", r.fileHandler.UploadFile)
+				file.GET("", r.fileHandler.ListFiles)
+			}
+
 			// provider pool route group
 			provider := v1.Group("/providers")
 			{
 				provider.GET("/", r.providerHandler.ListProviders)
+				provider.POST("/", r.providerHandler.AddProvider)
 				provider.GET("/:provider_name", r.providerHandler.ShowProvider)
+				provider.DELETE("/:provider_name", r.providerHandler.DeleteProvider)
 				provider.GET("/:provider_name/models", r.providerHandler.ListModels)
 				provider.GET("/:provider_name/models/:model_name", r.providerHandler.ShowModel)
+				provider.POST("/:provider_name/instances", r.providerHandler.CreateProviderInstance)
+				provider.GET("/:provider_name/instances", r.providerHandler.ListProviderInstances)
+				provider.GET("/:provider_name/instances/:instance_name", r.providerHandler.ShowProviderInstance)
+				provider.PUT("/:provider_name/instances/:instance_name", r.providerHandler.AlterProviderInstance)
+				provider.DELETE("/:provider_name/instances/:instance_name", r.providerHandler.DropProviderInstance)
+				provider.GET("/:provider_name/instances/:instance_name/models", r.providerHandler.ListInstanceModels)
+				provider.PUT("/:provider_name/instances/:instance_name/models/:model_name", r.providerHandler.EnableOrDisableModel)
+				provider.POST("/:provider_name/instances/:instance_name/models/:model_name", r.providerHandler.ChatToModel)
 			}
 		}
 
@@ -213,6 +236,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 			kb.GET("/basic_info", r.knowledgebaseHandler.GetBasicInfo)
 			kb.POST("/index", r.knowledgebaseHandler.CreateIndex)
 			kb.DELETE("/index", r.knowledgebaseHandler.DeleteIndex)
+			kb.POST("/insert_from_file", r.knowledgebaseHandler.InsertDatasetFromFile)
 
 			// KB ID specific routes
 			kbByID := kb.Group("/:kb_id")
@@ -230,6 +254,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 		{
 			tenant.POST("/doc_meta_index", r.tenantHandler.CreateDocMetaIndex)
 			tenant.DELETE("/doc_meta_index", r.tenantHandler.DeleteDocMetaIndex)
+			tenant.POST("/insert_metadata_from_file", r.tenantHandler.InsertMetadataFromFile)
 		}
 
 		// Document routes
@@ -237,6 +262,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 		{
 			doc.POST("/list", r.documentHandler.ListDocuments)
 			doc.POST("/metadata/summary", r.documentHandler.MetadataSummary)
+			doc.POST("/set_meta", r.documentHandler.SetMeta)
 		}
 
 		// Chunk routes
@@ -289,7 +315,6 @@ func (r *Router) Setup(engine *gin.Engine) {
 		// File routes
 		file := authorized.Group("/v1/file")
 		{
-			file.GET("/list", r.fileHandler.ListFiles)
 			file.GET("/root_folder", r.fileHandler.GetRootFolder)
 			file.GET("/parent_folder", r.fileHandler.GetParentFolder)
 			file.GET("/all_parent_folder", r.fileHandler.GetAllParentFolders)

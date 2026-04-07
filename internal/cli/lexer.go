@@ -72,6 +72,12 @@ func (l *Lexer) NextToken() Token {
 	case ',':
 		tok = newToken(TokenComma, l.ch)
 		l.readChar()
+	case '/':
+		tok = newToken(TokenSlash, l.ch)
+		l.readChar()
+	case '-':
+		tok = newToken(TokenDash, l.ch)
+		l.readChar()
 	case '\'':
 		tok.Type = TokenQuotedString
 		tok.Value = l.readQuotedString('\'')
@@ -93,10 +99,10 @@ func (l *Lexer) NextToken() Token {
 			tok.Type = TokenNumber
 			tok.Value = l.readNumber()
 			return tok
-		} else {
-			tok = newToken(TokenIllegal, l.ch)
-			l.readChar()
 		}
+
+		tok = newToken(TokenIllegal, l.ch)
+		l.readChar()
 	}
 
 	return tok
@@ -181,6 +187,10 @@ func (l *Lexer) lookupIdent(ident string) Token {
 		return Token{Type: TokenActive, Value: ident}
 	case "ADMIN":
 		return Token{Type: TokenAdmin, Value: ident}
+	case "ADD":
+		return Token{Type: TokenAdd, Value: ident}
+	case "DELETE":
+		return Token{Type: TokenDelete, Value: ident}
 	case "PASSWORD":
 		return Token{Type: TokenPassword, Value: ident}
 	case "DATASET":
@@ -251,6 +261,12 @@ func (l *Lexer) lookupIdent(ident string) Token {
 		return Token{Type: TokenChats, Value: ident}
 	case "CHAT":
 		return Token{Type: TokenChat, Value: ident}
+	case "THINK":
+		return Token{Type: TokenThink, Value: ident}
+	case "LS":
+		return Token{Type: TokenLS, Value: ident}
+	case "CAT":
+		return Token{Type: TokenCat, Value: ident}
 	case "FILES":
 		return Token{Type: TokenFiles, Value: ident}
 	case "AS":
@@ -305,6 +321,32 @@ func (l *Lexer) lookupIdent(ident string) Token {
 		return Token{Type: TokenAvailable, Value: ident}
 	case "NAME":
 		return Token{Type: TokenName, Value: ident}
+	case "INSTANCE":
+		return Token{Type: TokenInstance, Value: ident}
+	case "INSTANCES":
+		return Token{Type: TokenInstances, Value: ident}
+	case "DISABLE":
+		return Token{Type: TokenDisable, Value: ident}
+	case "ENABLE":
+		return Token{Type: TokenEnable, Value: ident}
+	case "INSERT":
+		return Token{Type: TokenInsert, Value: ident}
+	case "FILE":
+		return Token{Type: TokenFile, Value: ident}
+	case "METADATA":
+		return Token{Type: TokenMetadata, Value: ident}
+	case "USE":
+		return Token{Type: TokenUse, Value: ident}
+	case "UPDATE":
+		return Token{Type: TokenUpdate, Value: ident}
+	case "REMOVE":
+		return Token{Type: TokenRemove, Value: ident}
+	case "CHUNK":
+		return Token{Type: TokenChunk, Value: ident}
+	case "DOCUMENT":
+		return Token{Type: TokenDocument, Value: ident}
+	case "TAGS":
+		return Token{Type: TokenTag, Value: ident}
 	default:
 		return Token{Type: TokenIdentifier, Value: ident}
 	}

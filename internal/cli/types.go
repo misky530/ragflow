@@ -42,6 +42,8 @@ const (
 	TokenAlter
 	TokenActive
 	TokenAdmin
+	TokenAdd
+	TokenDelete
 	TokenPassword
 	TokenDataset
 	TokenDatasets
@@ -104,6 +106,22 @@ const (
 	TokenVectorSize
 	TokenDocMeta
 	TokenName // For ALTER PROVIDER <name> NAME <new_name>
+	TokenInstance
+	TokenInstances
+	TokenDisable
+	TokenEnable
+	TokenUse
+	TokenThink
+	TokenLS
+	TokenCat
+	TokenInsert
+	TokenFile
+	TokenMetadata
+	TokenUpdate
+	TokenRemove
+	TokenChunk
+	TokenDocument
+	TokenTag
 
 	// Literals
 	TokenIdentifier
@@ -113,7 +131,9 @@ const (
 	// Special
 	TokenSemicolon
 	TokenComma
+	TokenSlash
 	TokenEOF
+	TokenDash
 	TokenIllegal
 )
 
